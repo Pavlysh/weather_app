@@ -8,7 +8,7 @@
       "type": "pwa-chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",
-      "url": "D:/learning/coursePlus/index.html",
+      "url": "D:/learning/coursePlus/weather_app/index.html",
       "webRoot": "${workspaceFolder}"
     }
   ]

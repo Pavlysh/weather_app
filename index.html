@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ 
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="scr/styles.css" />
+    
+    <title>Weather forecast</title>
+  </head>
+  <body >
+    <div class="container containerStyle">
+      <div class="row">
+        <div class="col">
+          <div class="card border-light card1 mb-3">
+            <div class="card-body text-warning">
+              <h5 class="card-title mytitle" id="curDate"></h5>
+              <h1 class="card-title mytitle LabelCity"></h1>
+              <h4 class="card-title mytitle headT">  <span id="tMin"> </span> <span>\</span>  <span id="tMax"></span>  <span>t&#176</span> <a href="#" id="tempTypeC"> C |</a> <a href="#" id="tempTypeF"> F </a> </h4> 
+              <br />
+              <h5 class="card-title mytitle headP">Precipitation: -</h5>
+              <h5 class="card-title mytitle headH">Humidity: -</h5>
+              <h5 class="card-title mytitle headW">Wind: -</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-light card2 mb-3">
+            <div class="card-body">
+              <h5 class="card-title "> <span class="defcity1">Wroclaw</span> <span class="defcity1"> Dnipro </span> <span class="defcity1"> Kharkiv </span>  </h5>
+
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter the city"
+                  aria-label="City"
+                  aria-describedby="button-addon2"
+                  autofocus="on";
+                  id="inputCity"
+                />
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  id="button-addon2"
+                  name="buttonsearch"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container container2">
+        <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader"></div>
+          <div class="col colheader">12 may</div>
+          <div class="col colheader">13 may</div>
+          <div class="col colheader">14 may</div>
+          <div class="col colheader">15 may</div>
+          <div class="col colheader">16 may</div>
+          <div class="col colheader">17 may</div>
+          <div class="col colheader">18 may</div>
+        </div>
+  <!--       <div class="row text-break">
+          <div class="col-5 col-sm-2 colheader"></div>
+          <div class="col colheader">thursday</div>
+          <div class="col colheader">friday</div>
+          <div class="col colheader">saturday</div>
+          <div class="col colheader">sunday</div>
+          <div class="col colheader">monday</div>
+          <div class="col colheader">tursday</div>
+          <div class="col colheader">wensday</div>
+        </div>
+   -->      <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader"></div>
+          <div class="col colheader em1">⛅</div>
+          <div class="col colheader em2">🌞</div>
+          <div class="col colheader em3">🌧</div>
+          <div class="col colheader em4">⛅</div>
+          <div class="col colheader em5">🌞</div>
+          <div class="col colheader em6">⛅</div>
+          <div class="col colheader em7">⛅</div>
+        </div>
+
+        <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader">t•</div>
+          <div class="col t1">10&#176C-16&#176C</div>
+          <div class="col t2">13&#176C-18&#176C</div>
+          <div class="col t3">11&#176C-21&#176C</div>
+          <div class="col t4">12&#176C-22&#176C</div>
+          <div class="col t5">15&#176C-20&#176C</div>
+          <div class="col t6">14&#176C-23&#176C</div>
+          <div class="col t7">13&#176C-21&#176C</div>
+        </div>
+
+        
+
+        <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader">Percipation</div>
+          <div class="col mp1">20%</div>
+          <div class="col mp2">30%</div>
+          <div class="col mp3">10%</div>
+          <div class="col mp4">25%</div>
+          <div class="col mp5">17%</div>
+          <div class="col mp6">21%</div>
+          <div class="col mp7">22%</div>
+        </div>
+        <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader">Humidity</div>
+          <div class="col mh1">60%</div>
+          <div class="col mh2">40%</div>
+          <div class="col mh3">50%</div>
+          <div class="col mh4">55%</div>
+          <div class="col mh5">40%</div>
+          <div class="col mh6">40%</div>
+          <div class="col mh7">47%</div>
+        </div>
+
+        <div class="row text-break">
+          <div class="col-5 col-sm-3 colheader">Wind</div>
+          <div class="col w1">2 km/h</div>
+          <div class="col w2">8 km/h</div>
+          <div class="col w3">5 km/h</div>
+          <div class="col w4">3 km/h</div>
+          <div class="col w5">5 km/h</div>
+          <div class="col w6">2 km/h</div>
+          <div class="col w7">2 km/h</div>
+        </div>
+      </div>
+    </div>
+    <script src="scr/index.js"></script>
+  </body>
+</html>

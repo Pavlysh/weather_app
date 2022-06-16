@@ -91,3 +91,6 @@ body {
   cursor: pointer;
   color: darkblue;
 }
+#wicon {
+  size: 100px;
+}

@@ -44,18 +44,27 @@ function SetTemp(city) {
 }
 
 function showTemp(responce) {
-  console.log(responce.data);
+  let icon =
+    "http://openweathermap.org/img/w/" + responce.data.weather[0].icon + ".png";
   let t1 = responce.data.main.temp_min;
   let t2 = responce.data.main.temp_max;
   document.querySelector(".LabelCity").innerHTML = responce.data.name;
   document.querySelector("#tMin").innerHTML = t1;
   document.querySelector("#tMax").innerHTML = t2;
   document.querySelector(".headW").innerHTML =
-    "Wind: " + responce.data.wind.speed.toString() + " km/h";
+    "Wind: " + responce.data.wind.speed.toString();
   document.querySelector(".headH").innerHTML =
     "Humidity: " + responce.data.main.humidity.toString() + "%";
-  // document.querySelector(".headP").innerHTML =
-  //   "Precipitation: " + responce.data.main.persipation.toString() + "%";
+  document.querySelector(".headP").innerHTML =
+    responce.data.weather[0].description.toString();
+  if (window.itIsTempInCelsius) {
+    document.querySelector("#tempTypeC").style.color = "orange";
+    document.querySelector("#tempTypeF").style.color = "darkblue";
+  } else {
+    document.querySelector("#tempTypeC").style.color = "darkblue";
+    document.querySelector("#tempTypeF").style.color = "orange";
+  }
+  document.querySelector("#wicon").src = `${icon}`;
 }
 function cityIsNotFound() {
   document.querySelector("#tMin").innerHTML = "No data";
@@ -63,9 +72,10 @@ function cityIsNotFound() {
   document.querySelector(".headW").innerHTML = "-";
   document.querySelector(".headH").innerHTML = "-";
 }
-function getPosition() {
+function getPosition(units) {
   let apiKey = "3c1bab47a46bc2563493cd283206466e";
-  let units = "metric";
+  // let units = "metric";
+  let cityname = document.querySelector(".LabelCity").innerHTML;
   let weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityname}&units=${units}&appid=${apiKey}`;
 
   axios
@@ -76,7 +86,11 @@ function getPosition() {
 function SetHead() {
   // let t1 = getRandomIntInclusive(7, 26);
   //let t2 = getRandomIntInclusive(t1, 26);
-  getPosition();
+  if (window.itIsTempInCelsius) {
+    getPosition("metric");
+  } else {
+    getPosition("imperial");
+  }
   //navigator.geolocation.get (getPosition);
 }
 
@@ -86,10 +100,7 @@ function CitySearch() {
   cityname = cityname.trim();
 
   document.querySelector(".LabelCity").innerHTML = cityname;
-  // SetTemp(cityname);
-  // SetHumidity(cityname);
-  // setValue(7, ".mp");
-  //setValue(7, ".w");
+
   SetHead();
 }
 
@@ -125,49 +136,36 @@ document.querySelector("#curDate").innerHTML =
 let itIsTempInCelsius = true;
 
 function SetTemp(isCelsiuseType) {
-  //console.log(window.itIsTempInCelsius);
-  console.log(isCelsiuseType + ";" + window.itIsTempInCelsius);
   if (window.itIsTempInCelsius === undefined) {
     window.itIsTempInCelsius = true;
   }
-  if (window.itIsTempInCelsius !== isCelsiuseType) {
-    if (isCelsiuseType === true) {
-      // convert faring to celsius
-      let minTemp = document.querySelector("#tMin");
-      minTemp.innerHTML = Math.round((minTemp.innerHTML * 9) / 5 + 32);
-      let maxTemp = document.querySelector("#tMax");
-      maxTemp.innerHTML = Math.round((maxTemp.innerHTML * 9) / 5 + 32);
-    } else {
-      // convert faring to celsius
-      //let previriousTempType = localStorage();
 
-      let minTemp = document.querySelector("#tMin");
-      minTemp.innerHTML = Math.round(((minTemp.innerHTML - 32) * 5) / 9);
-
-      let maxTemp = document.querySelector("#tMax");
-      maxTemp.innerHTML = Math.round(((maxTemp.innerHTML - 32) * 5) / 9);
-    }
+  if (isCelsiuseType) {
+    getPosition("metric");
+  } else {
+    getPosition("imperial");
   }
+
   window.itIsTempInCelsius = isCelsiuseType;
 }
-function showCurrentCityandWeather(position) {
+function showCurrentCityandWeather(position, unit = "metric") {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
   let apiKey = "3c1bab47a46bc2563493cd283206466e";
-  let units = "metric";
-  let weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${apiKey}`;
+  //let units = unit; //"metric";
+  let weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${apiKey}`;
 
   axios
     .get(weatherURL)
     .then((responce) => showTemp(responce))
     .catch(cityIsNotFound);
 }
-debugger;
+//debugger;
 let cityname = "";
 let clickTypeC = document.querySelector("#tempTypeC");
 clickTypeC.addEventListener("click", () => SetTemp(true));
 
 let clickTypeF = document.querySelector("#tempTypeF");
 clickTypeF.addEventListener("click", () => SetTemp(false));
-
+window.itIsTempInCelsius = true;
 navigator.geolocation.getCurrentPosition(showCurrentCityandWeather);

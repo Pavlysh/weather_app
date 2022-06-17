@@ -167,5 +167,9 @@ clickTypeC.addEventListener("click", () => SetTemp(true));
 
 let clickTypeF = document.querySelector("#tempTypeF");
 clickTypeF.addEventListener("click", () => SetTemp(false));
+
+var el = document.getElementById("inputCity");
+el.addEventListener("keydown", CitySearch);
+
 window.itIsTempInCelsius = true;
 navigator.geolocation.getCurrentPosition(showCurrentCityandWeather);

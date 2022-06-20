@@ -31,7 +31,7 @@ function showTemp(responce) {
     ".png";
   let t1 = responce.data.current.temp;
   let t2 = responce.data.current.feels_like;
-  //document.querySelector(".LabelCity").innerHTML = responce.data.name;
+
   document.querySelector("#tMin").innerHTML = t1;
   document.querySelector("#tMax").innerHTML = t2;
   document.querySelector(".headW").innerHTML =
@@ -76,7 +76,7 @@ function SetHead() {
   }
 }
 
-function CitySearch() {
+function citySearch() {
   cityname = document.getElementById("inputCity").value.toString();
   cityname = cityname.toUpperCase();
   cityname = cityname.trim();
@@ -88,11 +88,12 @@ function CitySearch() {
 
 function enterCity(defcity) {
   document.getElementById("inputCity").value = defcity;
+  citySearch();
   //alert(document.querySelector(".defcity1").innerHTML.toString());
 }
 
 let buttonsearch = document.querySelector("#button-addon2");
-buttonsearch.addEventListener("click", CitySearch);
+buttonsearch.addEventListener("click", citySearch);
 
 defcityl1 = document.querySelectorAll(".defcity1");
 
@@ -126,6 +127,17 @@ function showCurrentCityandWeatherByCoordinates(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
   let apiKey = "3c1bab47a46bc2563493cd283206466e";
+  let unit = "metric";
+
+  let weatherURL1 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${apiKey}`;
+
+  axios
+    .get(weatherURL1)
+    .then((responce) => {
+      document.querySelector(".LabelCity").innerHTML =
+        responce.data.name.toUpperCase();
+    })
+    .catch(cityIsNotFound);
 
   let weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit}&appid=${apiKey}`;
 
@@ -158,7 +170,11 @@ let clickTypeF = document.querySelector("#tempTypeF");
 clickTypeF.addEventListener("click", () => SetTemp(false));
 
 var el = document.getElementById("inputCity");
-el.addEventListener("keydown", CitySearch);
+el.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    return citySearch();
+  }
+});
 
 window.itIsTempInCelsius = true;
 navigator.geolocation.getCurrentPosition(
